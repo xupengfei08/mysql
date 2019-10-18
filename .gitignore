@@ -1,0 +1,8 @@
+### IntelliJ IDEA ###
+.idea
+
+### docker启动持久化数据 ###
+ecb-data/
+
+### 文件
+mysql.iml
