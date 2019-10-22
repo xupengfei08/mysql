@@ -19,6 +19,9 @@ fi
 # --single-transaction：该选项在导出数据之前提交一个BEGIN SQL语句，BEGIN 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于多版本存储引擎，仅InnoDB。
 /usr/bin/mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction -R -A | gzip > $BACKUP_DIR/data_$(date +%Y%m%d).sql.gz
 
+#复制为最新版本
+cp $BACKUP_DIR/data_$(date +%Y%m%d).sql.gz $BACKUP_DIR/data_latest.sql.gz
+
 #查找更改时间在7日以前的sql备份文件并删除
 #参数说明：
 # -mtime +7：表示7天以外的，即从距当前时间的7天前算起，往更早的时间推移
