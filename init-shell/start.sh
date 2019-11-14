@@ -9,13 +9,12 @@ env >>/etc/default/locale
 # 默认开启定时任务
 if [ "${CRON_BACKUP_ENABLE:-true}" ]; then
   echo "开启定时任务"
-  #启动cron并将其启动结果写入文件
   # 这里需要使用sudo,否则会提示cron: can't open or create /var/run/crond.pid: Permission denied
   # 这个问题无法通过修改/var/run/crond或/run文件夹权限解决
   # 需要注意的是,使用sudo后cron是在root用户下运行的,root用户下使用`service cron status`会出现` [ ok ] cron is running. `
   # 而mysql执行`service cron status`则会出现` [FAIL] cron is not running ... failed! `
   # 虽然如此,mysql用户身份制定的定时任务还是会执行的
-  sudo /usr/sbin/service cron start &>>/var/lib/mysql/cron-start.log
+  sudo /usr/sbin/service cron start
 
   #授予权限
   sudo chmod 777 -R /cron-shell
@@ -28,7 +27,7 @@ if [ "${CRON_BACKUP_ENABLE:-true}" ]; then
   # 定时备份执行时间，默认每日凌晨2点
   echo "${CRON_BACKUP_TIME:-0 2 * * *} /cron-shell/backup.sh" > /cron-shell/crontab.bak
 
-  #以/cron-shell/crontab.bak作为crontab的任务列表文件并载入
+  # 以/cron-shell/crontab.bak作为crontab的任务列表文件并载入
   # 因为执行的定时任务一般是数据库相关的,mysql用户就可以了,如果使用root用户可能会报错:`Got error: 1045: Access denied for user 'root'@'localhost' (using password: YES) when trying to connect`
   # 所以这里使用mysql用户载入定时任务表,任务脚本也将以mysql用户执行,需注意权限问题
   crontab /cron-shell/crontab.bak

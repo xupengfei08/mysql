@@ -8,9 +8,8 @@ CRON_BACKUP_TIME | 定时备份执行时间 | 合法cron表达式 | 0 2 * * *（
 MYSQL_BACKUP_DAYS | 备份数据保存天数 | 1-30 | 7 | -e MYSQL_BACKUP_DAYS=30
 
 
-
 ## 备份数据存储位置
-> mysql备份数据压缩文件在`容器内`的存储路径：/data/mysql/backup，可通过使用 -v ${宿主机指定路径}:/data/mysql/backup来将备份数据挂载到宿主机
+> mysql备份数据压缩文件在`容器内`的存储路径：/var/lib/mysql/backup
 
 ## 备份数据文件命名
 > 按照日期：data_$(date +%Y%m%d).sql.gz生成备份文件并压缩，同时复制为最新版本：data_latest.sql.gz

@@ -27,5 +27,3 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
       && apt-get clean \
 #赋予脚本可执行权限
       && chmod a+x -R /docker-entrypoint-initdb.d
-
-VOLUME /data/mysql/backup

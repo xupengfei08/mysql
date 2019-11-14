@@ -1,10 +1,11 @@
 #!/bin/bash
 #作为crontab运行的脚本,需特别注意环境变量问题,指令写成绝对路径
 
+echo "执行备份..."
 #读取环境变量
 . /etc/profile
 #将备份文件保存在目录
-BACKUP_DIR='/data/mysql/backup'
+BACKUP_DIR='/var/lib/mysql/backup'
 #如果目录不存在则新建
 if [ ! -d "$BACKUP_DIR" ]; then
   mkdir -p "$BACKUP_DIR"
@@ -28,3 +29,4 @@ cp $BACKUP_DIR/data_$(date +%Y%m%d).sql.gz $BACKUP_DIR/data_latest.sql.gz
 # -type f：类型为文件
 # 备份数据保存天数，默认7天
 /usr/bin/find $BACKUP_DIR -mtime +"${MYSQL_BACKUP_DAYS:-7}" -type f -name "data_[1-9]*.sql.gz" -exec rm -rf {} \;
+echo "备份完成"
